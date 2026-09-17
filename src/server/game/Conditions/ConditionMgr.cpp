@@ -138,7 +138,17 @@ bool Condition::Meets(ConditionSourceInfo& sourceInfo)
     case CONDITION_RACE:
     {
         if (Unit* unit = object->ToUnit())
-            condMeets = unit->getRaceMask() & ConditionValue1;
+        {
+            bool raceResult = false;
+            if (sScriptMgr->OnConditionCheckRace(this, unit, raceResult))
+            {
+                condMeets = raceResult;
+            }
+            else
+            {
+                condMeets = unit->getRaceMask() & ConditionValue1;
+            }
+        }
         break;
     }
     case CONDITION_GENDER:
@@ -2206,6 +2216,12 @@ bool ConditionMgr::isConditionTypeValid(Condition* cond)
     }
     case CONDITION_RACE:
     {
+        bool valid = false;
+        if (sScriptMgr->OnConditionValidateRace(cond, valid))
+        {
+            return valid;
+        }
+
         if (!(cond->ConditionValue1 & sRaceMgr->GetPlayableRaceMask()))
         {
             LOG_ERROR("sql.sql", "Race condition has non existing racemask ({}), skipped", cond->ConditionValue1 & ~sRaceMgr->GetPlayableRaceMask());

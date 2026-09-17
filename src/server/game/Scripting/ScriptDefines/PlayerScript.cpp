@@ -984,6 +984,34 @@ void ScriptMgr::OnPlayerAfterTrainSpell(Player* player, Creature* trainer, uint3
     CALL_ENABLED_HOOKS(PlayerScript, PLAYERHOOK_ON_AFTER_TRAIN_SPELL, script->OnPlayerAfterTrainSpell(player, trainer, spellId));
 }
 
+bool ScriptMgr::OnPlayerCheckItemRace(Player const* player, ItemTemplate const* proto, bool& result)
+{
+    if (ScriptRegistry<PlayerScript>::EnabledHooks[PLAYERHOOK_ON_CHECK_ITEM_RACE].empty())
+        return false;
+
+    for (auto const& script : ScriptRegistry<PlayerScript>::EnabledHooks[PLAYERHOOK_ON_CHECK_ITEM_RACE])
+    {
+        if (script->OnPlayerCheckItemRace(player, proto, result))
+            return true;
+    }
+
+    return false;
+}
+
+bool ScriptMgr::OnPlayerCheckQuestRace(Player const* player, Quest const* quest, bool& result)
+{
+    if (ScriptRegistry<PlayerScript>::EnabledHooks[PLAYERHOOK_ON_CHECK_QUEST_RACE].empty())
+        return false;
+
+    for (auto const& script : ScriptRegistry<PlayerScript>::EnabledHooks[PLAYERHOOK_ON_CHECK_QUEST_RACE])
+    {
+        if (script->OnPlayerCheckQuestRace(player, quest, result))
+            return true;
+    }
+
+    return false;
+}
+
 PlayerScript::PlayerScript(char const* name, std::vector<uint16> enabledHooks)
     : ScriptObject(name, PLAYERHOOK_END)
 {

@@ -1142,6 +1142,20 @@ bool Player::SatisfyQuestClass(Quest const* qInfo, bool msg) const
 
 bool Player::SatisfyQuestRace(Quest const* qInfo, bool msg) const
 {
+    bool raceAllowed = false;
+    if (sScriptMgr->OnPlayerCheckQuestRace(this, qInfo, raceAllowed))
+    {
+        if (!raceAllowed)
+        {
+            if (msg)
+            {
+                SendCanTakeQuestResponse(INVALIDREASON_QUEST_FAILED_WRONG_RACE);
+            }
+            return false;
+        }
+        return true;
+    }
+
     uint32 reqraces = qInfo->GetAllowableRaces();
     if (reqraces == 0)
         return true;

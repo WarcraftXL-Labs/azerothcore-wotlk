@@ -2369,7 +2369,20 @@ InventoryResult Player::CanUseItem(ItemTemplate const* proto) const
         return EQUIP_ERR_YOU_CAN_NEVER_USE_THAT_ITEM;
     }
 
-    if ((proto->AllowableClass & getClassMask()) == 0 || (proto->AllowableRace & getRaceMask()) == 0)
+    if ((proto->AllowableClass & getClassMask()) == 0)
+    {
+        return EQUIP_ERR_YOU_CAN_NEVER_USE_THAT_ITEM;
+    }
+
+    bool raceAllowed = false;
+    if (sScriptMgr->OnPlayerCheckItemRace(this, proto, raceAllowed))
+    {
+        if (!raceAllowed)
+        {
+            return EQUIP_ERR_YOU_CAN_NEVER_USE_THAT_ITEM;
+        }
+    }
+    else if ((proto->AllowableRace & getRaceMask()) == 0)
     {
         return EQUIP_ERR_YOU_CAN_NEVER_USE_THAT_ITEM;
     }

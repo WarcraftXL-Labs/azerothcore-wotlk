@@ -109,6 +109,34 @@ void ScriptMgr::GetDialogStatus(Player* player, Object* questgiver)
     CALL_ENABLED_HOOKS(MiscScript, MISCHOOK_GET_DIALOG_STATUS, script->GetDialogStatus(player, questgiver));
 }
 
+bool ScriptMgr::OnConditionCheckRace(Condition const* cond, Unit const* unit, bool& result)
+{
+    if (ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CONDITION_CHECK_RACE].empty())
+        return false;
+
+    for (auto const& script : ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CONDITION_CHECK_RACE])
+    {
+        if (script->OnConditionCheckRace(cond, unit, result))
+            return true;
+    }
+
+    return false;
+}
+
+bool ScriptMgr::OnConditionValidateRace(Condition const* cond, bool& result)
+{
+    if (ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CONDITION_VALIDATE_RACE].empty())
+        return false;
+
+    for (auto const& script : ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CONDITION_VALIDATE_RACE])
+    {
+        if (script->OnConditionValidateRace(cond, result))
+            return true;
+    }
+
+    return false;
+}
+
 MiscScript::MiscScript(char const* name, std::vector<uint16> enabledHooks)
     : ScriptObject(name, MISCHOOK_END)
 {

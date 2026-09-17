@@ -231,6 +231,8 @@ enum PlayerHook
     PLAYERHOOK_ON_BEFORE_RECEIVE_SPELL_LIST_FROM_TRAINER,
     PLAYERHOOK_ON_GET_TRAINER_SPELL_STATE,
     PLAYERHOOK_ON_AFTER_TRAIN_SPELL,
+    PLAYERHOOK_ON_CHECK_ITEM_RACE,
+    PLAYERHOOK_ON_CHECK_QUEST_RACE,
     PLAYERHOOK_END
 };
 
@@ -946,6 +948,26 @@ public:
      * @param spellId The id of the trainer spell that was bought
      */
     virtual void OnPlayerAfterTrainSpell(Player* /*player*/, Creature* /*trainer*/, uint32 /*spellId*/) {}
+
+    /**
+     * @brief Called when checking whether a player's race allows equipping/using an item
+     *
+     * @param player Contains information about the Player
+     * @param proto Item template of the item being checked
+     * @param result Output whether the player race is allowed for this item
+     * @return true if handled by script (skips default check), false to fallback to default
+     */
+    virtual bool OnPlayerCheckItemRace(Player const* /*player*/, ItemTemplate const* /*proto*/, bool& /*result*/) { return false; }
+
+    /**
+     * @brief Called when checking whether a player's race allows accepting/seeing a quest
+     *
+     * @param player Contains information about the Player
+     * @param quest Quest being checked
+     * @param result Output whether the player race is allowed for this quest
+     * @return true if handled by script (skips default check), false to fallback to default
+     */
+    virtual bool OnPlayerCheckQuestRace(Player const* /*player*/, Quest const* /*quest*/, bool& /*result*/) { return false; }
 };
 
 #endif

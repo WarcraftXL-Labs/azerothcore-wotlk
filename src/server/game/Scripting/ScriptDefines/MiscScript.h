@@ -22,6 +22,9 @@
 #include "ScriptObject.h"
 #include <vector>
 
+struct Condition;
+class Unit;
+
 enum MiscHook
 {
     MISCHOOK_ON_CONSTRUCT_OBJECT,
@@ -42,6 +45,8 @@ enum MiscHook
     MISCHOOK_ON_PLAYER_SET_PHASE,
     MISCHOOK_ON_INSTANCE_SAVE,
     MISCHOOK_GET_DIALOG_STATUS,
+    MISCHOOK_ON_CONDITION_CHECK_RACE,
+    MISCHOOK_ON_CONDITION_VALIDATE_RACE,
     MISCHOOK_END
 };
 
@@ -94,6 +99,25 @@ public:
      * @param questgiver Contains information about the Object
      */
     virtual void GetDialogStatus(Player* /*player*/, Object* /*questgiver*/) { }
+
+    /**
+     * @brief Called when evaluating CONDITION_RACE for a unit
+     *
+     * @param cond Condition being checked
+     * @param unit Unit being checked
+     * @param result Output whether the condition is met
+     * @return true if handled by script, false to fallback to default logic
+     */
+    virtual bool OnConditionCheckRace(Condition const* /*cond*/, Unit const* /*unit*/, bool& /*result*/) { return false; }
+
+    /**
+     * @brief Called when validating CONDITION_RACE parameters
+     *
+     * @param cond Condition being validated
+     * @param result Output whether the condition is valid
+     * @return true if handled by script, false to fallback to default logic
+     */
+    virtual bool OnConditionValidateRace(Condition const* /*cond*/, bool& /*result*/) { return false; }
 };
 
 #endif
