@@ -707,6 +707,7 @@ public: /* MiscScript */
     void GetDialogStatus(Player* player, Object* questgiver);
     bool OnConditionCheckRace(Condition const* cond, Unit const* unit, bool& result);
     bool OnConditionValidateRace(Condition const* cond, bool& result);
+    bool OnItemQuerySingleRaceMask(WorldSession* session, ItemTemplate const* proto, WorldPacket& data);
 
 public: /* CommandSC */
 

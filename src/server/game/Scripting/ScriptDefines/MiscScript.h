@@ -24,6 +24,9 @@
 
 struct Condition;
 class Unit;
+class WorldSession;
+struct ItemTemplate;
+class WorldPacket;
 
 enum MiscHook
 {
@@ -47,6 +50,7 @@ enum MiscHook
     MISCHOOK_GET_DIALOG_STATUS,
     MISCHOOK_ON_CONDITION_CHECK_RACE,
     MISCHOOK_ON_CONDITION_VALIDATE_RACE,
+    MISCHOOK_ON_ITEM_QUERY_SINGLE_RACE_MASK,
     MISCHOOK_END
 };
 
@@ -118,6 +122,16 @@ public:
      * @return true if handled by script, false to fallback to default logic
      */
     virtual bool OnConditionValidateRace(Condition const* /*cond*/, bool& /*result*/) { return false; }
+
+    /**
+     * @brief Called when serializing AllowableRace in SMSG_ITEM_QUERY_SINGLE_RESPONSE
+     *
+     * @param session WorldSession of the player querying the item
+     * @param proto Item template being queried
+     * @param data WorldPacket response buffer to serialize race mask into
+     * @return true if handled by script (custom serialization written), false to fallback to default uint32
+     */
+    virtual bool OnItemQuerySingleRaceMask(WorldSession* /*session*/, ItemTemplate const* /*proto*/, WorldPacket& /*data*/) { return false; }
 };
 
 #endif

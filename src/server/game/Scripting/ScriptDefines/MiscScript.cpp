@@ -16,8 +16,11 @@
  */
 
 #include "MiscScript.h"
+#include "ItemTemplate.h"
 #include "ScriptMgr.h"
 #include "ScriptMgrMacros.h"
+#include "WorldPacket.h"
+#include "WorldSession.h"
 
 void ScriptMgr::OnConstructObject(Object* origin)
 {
@@ -131,6 +134,20 @@ bool ScriptMgr::OnConditionValidateRace(Condition const* cond, bool& result)
     for (auto const& script : ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CONDITION_VALIDATE_RACE])
     {
         if (script->OnConditionValidateRace(cond, result))
+            return true;
+    }
+
+    return false;
+}
+
+bool ScriptMgr::OnItemQuerySingleRaceMask(WorldSession* session, ItemTemplate const* proto, WorldPacket& data)
+{
+    if (ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_ITEM_QUERY_SINGLE_RACE_MASK].empty())
+        return false;
+
+    for (auto const& script : ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_ITEM_QUERY_SINGLE_RACE_MASK])
+    {
+        if (script->OnItemQuerySingleRaceMask(session, proto, data))
             return true;
     }
 

@@ -427,7 +427,10 @@ void WorldSession::HandleItemQuerySingleOpcode(WorldPacket& recvData)
         queryData << pProto->SellPrice;
         queryData << pProto->InventoryType;
         queryData << pProto->AllowableClass;
-        queryData << pProto->AllowableRace;
+        if (!sScriptMgr->OnItemQuerySingleRaceMask(this, pProto, queryData))
+        {
+            queryData << pProto->AllowableRace;
+        }
         queryData << pProto->ItemLevel;
         queryData << pProto->RequiredLevel;
         queryData << pProto->RequiredSkill;
