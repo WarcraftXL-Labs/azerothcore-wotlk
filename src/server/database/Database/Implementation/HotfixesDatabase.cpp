@@ -15,9 +15,22 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "DatabaseEnv.h"
+#include "HotfixesDatabase.h"
 
-DatabaseWorkerPool<WorldDatabaseConnection> WorldDatabase;
-DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabase;
-DatabaseWorkerPool<LoginDatabaseConnection> LoginDatabase;
-DatabaseWorkerPool<HotfixesDatabaseConnection> HotfixesDatabase;
+HotfixesDatabaseConnection::HotfixesDatabaseConnection(MySQLConnectionInfo& connInfo) :
+    MySQLConnection(connInfo)
+{
+}
+
+HotfixesDatabaseConnection::HotfixesDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo) :
+    MySQLConnection(q, connInfo)
+{
+}
+
+HotfixesDatabaseConnection::~HotfixesDatabaseConnection()
+{
+}
+
+void HotfixesDatabaseConnection::DoPrepareStatements()
+{
+}

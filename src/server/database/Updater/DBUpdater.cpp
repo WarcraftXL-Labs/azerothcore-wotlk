@@ -198,6 +198,45 @@ std::string DBUpdater<CharacterDatabaseConnection>::GetDBModuleName()
     return "characters";
 }
 
+// Hotfixes Database
+template<>
+std::string DBUpdater<HotfixesDatabaseConnection>::GetConfigEntry()
+{
+    return "Updates.Hotfixes";
+}
+
+template<>
+std::string DBUpdater<HotfixesDatabaseConnection>::GetTableName()
+{
+    return "Hotfixes";
+}
+
+template<>
+std::string DBUpdater<HotfixesDatabaseConnection>::GetSourceDirectory()
+{
+    return BuiltInConfig::GetSourceDirectory();
+}
+
+template<>
+std::string DBUpdater<HotfixesDatabaseConnection>::GetBaseFilesDirectory()
+{
+    return DBUpdater<HotfixesDatabaseConnection>::GetSourceDirectory() + "/data/sql/base/db_hotfixes/";
+}
+
+template<>
+bool DBUpdater<HotfixesDatabaseConnection>::IsEnabled(uint32 const updateMask)
+{
+    // This way silences warnings under msvc
+    return (updateMask & DatabaseLoader::DATABASE_HOTFIXES) ? true : false;
+}
+
+template<>
+std::string DBUpdater<HotfixesDatabaseConnection>::GetDBModuleName()
+{
+    // must be lowercase
+    return "hotfixes";
+}
+
 // All
 template<class T>
 BaseLocation DBUpdater<T>::GetBaseLocationType()
@@ -636,3 +675,4 @@ bool ModuleDBUpdater::Populate(DatabaseUpdatePool& pool, DBUpdaterInfo const& in
 template class AC_DATABASE_API DBUpdater<LoginDatabaseConnection>;
 template class AC_DATABASE_API DBUpdater<WorldDatabaseConnection>;
 template class AC_DATABASE_API DBUpdater<CharacterDatabaseConnection>;
+template class AC_DATABASE_API DBUpdater<HotfixesDatabaseConnection>;

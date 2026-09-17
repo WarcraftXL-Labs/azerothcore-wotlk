@@ -441,7 +441,8 @@ bool StartDB()
     loader
         .AddDatabase(LoginDatabase, "Login")
         .AddDatabase(CharacterDatabase, "Character")
-        .AddDatabase(WorldDatabase, "World");
+        .AddDatabase(WorldDatabase, "World")
+        .AddDatabase(HotfixesDatabase, "Hotfixes");
 
     if (!loader.Load())
         return false;
@@ -496,6 +497,7 @@ void StopDB()
     CharacterDatabase.Close();
     WorldDatabase.Close();
     LoginDatabase.Close();
+    HotfixesDatabase.Close();
 
     sScriptMgr->OnModuleDatabasesClosing();
 

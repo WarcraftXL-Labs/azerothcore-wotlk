@@ -15,9 +15,28 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "DatabaseEnv.h"
+#ifndef _HOTFIXESDATABASE_H
+#define _HOTFIXESDATABASE_H
 
-DatabaseWorkerPool<WorldDatabaseConnection> WorldDatabase;
-DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabase;
-DatabaseWorkerPool<LoginDatabaseConnection> LoginDatabase;
-DatabaseWorkerPool<HotfixesDatabaseConnection> HotfixesDatabase;
+#include "MySQLConnection.h"
+
+enum HotfixesDatabaseStatements : uint32
+{
+    MAX_HOTFIXESDATABASE_STATEMENTS
+};
+
+class AC_DATABASE_API HotfixesDatabaseConnection : public MySQLConnection
+{
+public:
+    typedef HotfixesDatabaseStatements Statements;
+
+    // Constructors for sync and async connections
+    HotfixesDatabaseConnection(MySQLConnectionInfo& connInfo);
+    HotfixesDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo);
+    ~HotfixesDatabaseConnection() override;
+
+    // Loads database type specific prepared statements
+    void DoPrepareStatements() override;
+};
+
+#endif

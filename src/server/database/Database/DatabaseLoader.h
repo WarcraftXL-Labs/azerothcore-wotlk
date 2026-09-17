@@ -32,7 +32,7 @@ class DatabaseWorkerPool;
 class AC_DATABASE_API DatabaseLoader
 {
 public:
-    DatabaseLoader(std::string const& logger, uint32 const defaultUpdateMask = 7, std::string_view modulesList = {});
+    DatabaseLoader(std::string const& logger, uint32 const defaultUpdateMask = 15, std::string_view modulesList = {});
 
     // Register a database to the loader (lazy implemented)
     template <class T>
@@ -48,8 +48,9 @@ public:
         DATABASE_LOGIN      = 1,
         DATABASE_CHARACTER  = 2,
         DATABASE_WORLD      = 4,
+        DATABASE_HOTFIXES   = 8,
 
-        DATABASE_MASK_ALL   = DATABASE_LOGIN | DATABASE_CHARACTER | DATABASE_WORLD
+        DATABASE_MASK_ALL   = DATABASE_LOGIN | DATABASE_CHARACTER | DATABASE_WORLD | DATABASE_HOTFIXES
     };
 
     [[nodiscard]] uint32 GetUpdateFlags() const

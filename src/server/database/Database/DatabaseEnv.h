@@ -22,6 +22,7 @@
 #include "Define.h"
 
 #include "Implementation/CharacterDatabase.h"
+#include "Implementation/HotfixesDatabase.h"
 #include "Implementation/LoginDatabase.h"
 #include "Implementation/WorldDatabase.h"
 
@@ -35,5 +36,7 @@ AC_DATABASE_API extern DatabaseWorkerPool<WorldDatabaseConnection> WorldDatabase
 AC_DATABASE_API extern DatabaseWorkerPool<CharacterDatabaseConnection> CharacterDatabase;
 /// Accessor to the realm/login database
 AC_DATABASE_API extern DatabaseWorkerPool<LoginDatabaseConnection> LoginDatabase;
+/// Accessor to the hotfixes database
+AC_DATABASE_API extern DatabaseWorkerPool<HotfixesDatabaseConnection> HotfixesDatabase;
 
 #endif
