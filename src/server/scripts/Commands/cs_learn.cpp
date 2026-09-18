@@ -16,6 +16,7 @@
  */
 
 #include "CommandScript.h"
+#include "DataStoresExtend.h"
 #include "Language.h"
 #include "ObjectMgr.h"
 #include "Pet.h"
@@ -418,7 +419,7 @@ public:
                 continue;
 
             // skip wrong class skills
-            if (skillLine->ClassMask && (skillLine->ClassMask & classmask) == 0)
+            if (!MatchesClassMask(DYNAMIC_MASK_TABLE_SKILL_LINE_ABILITY, skillLine->ID, 1, skillLine->ClassMask, player->getClass()))
                 continue;
 
             SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(skillLine->Spell);

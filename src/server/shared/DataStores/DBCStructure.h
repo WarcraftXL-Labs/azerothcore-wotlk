@@ -1567,7 +1567,7 @@ struct ScalingStatValuesEntry
 
 struct SkillRaceClassInfoEntry
 {
-    //uint32 ID;                                            // 0
+    uint32 ID;                                              // 0
     uint32 SkillID;                                         // 1
     uint32 RaceMask;                                        // 2
     uint32 ClassMask;                                       // 3

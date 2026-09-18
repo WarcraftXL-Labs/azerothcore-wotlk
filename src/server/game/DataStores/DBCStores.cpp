@@ -22,6 +22,7 @@
 #include "Errors.h"
 #include "LFGMgr.h"
 #include "Log.h"
+#include "DataStoresExtend.h"
 #include "SharedDefines.h"
 #include "SpellMgr.h"
 #include "TransportMgr.h"
@@ -897,12 +898,12 @@ SkillRaceClassInfoEntry const* GetSkillRaceClassInfo(uint32 skill, uint8 race, u
     SkillRaceClassInfoBounds bounds = SkillRaceClassInfoBySkill.equal_range(skill);
     for (SkillRaceClassInfoMap::iterator itr = bounds.first; itr != bounds.second; ++itr)
     {
-        if (itr->second->RaceMask && !(itr->second->RaceMask & (1 << (race - 1))))
+        if (!MatchesRaceMask(DYNAMIC_MASK_TABLE_SKILL_RACE_CLASS, itr->second->ID, 0, itr->second->RaceMask, race))
         {
             continue;
         }
 
-        if (itr->second->ClassMask && !(itr->second->ClassMask & (1 << (class_ - 1))))
+        if (!MatchesClassMask(DYNAMIC_MASK_TABLE_SKILL_RACE_CLASS, itr->second->ID, 1, itr->second->ClassMask, class_))
         {
             continue;
         }

@@ -708,6 +708,8 @@ public: /* MiscScript */
     bool OnConditionCheckRace(Condition const* cond, Unit const* unit, bool& result);
     bool OnConditionValidateRace(Condition const* cond, bool& result);
     bool OnItemQuerySingleRaceMask(WorldSession* session, ItemTemplate const* proto, WorldPacket& data);
+    bool OnCheckRaceMask(uint8 table, uint32 recordId, uint8 maskIndex, uint32 fallbackMask, uint8 race, bool& result);
+    bool OnCheckClassMask(uint8 table, uint32 recordId, uint8 maskIndex, uint32 fallbackMask, uint8 class_, bool& result);
 
 public: /* CommandSC */
 

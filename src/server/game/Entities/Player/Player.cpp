@@ -41,6 +41,7 @@
 #include "Config.h"
 #include "CreatureAI.h"
 #include "DatabaseEnv.h"
+#include "DataStoresExtend.h"
 #include "DisableMgr.h"
 #include "Formulas.h"
 #include "GameEventMgr.h"
@@ -12620,11 +12621,11 @@ bool Player::IsSpellFitByClassAndRace(uint32 spell_id) const
     for (SkillLineAbilityMap::const_iterator _spell_idx = bounds.first; _spell_idx != bounds.second; ++_spell_idx)
     {
         // skip wrong race skills
-        if (_spell_idx->second->RaceMask && (_spell_idx->second->RaceMask & racemask) == 0)
+        if (!MatchesRaceMask(DYNAMIC_MASK_TABLE_SKILL_LINE_ABILITY, _spell_idx->second->ID, 0, _spell_idx->second->RaceMask, getRace(true)))
             continue;
 
         // skip wrong class skills
-        if (_spell_idx->second->ClassMask && (_spell_idx->second->ClassMask & classmask) == 0)
+        if (!MatchesClassMask(DYNAMIC_MASK_TABLE_SKILL_LINE_ABILITY, _spell_idx->second->ID, 1, _spell_idx->second->ClassMask, getClass()))
             continue;
 
         // skip wrong class and race skill saved in SkillRaceClassInfo.dbc
@@ -14286,7 +14287,7 @@ void Player::LearnTalent(uint32 talentId, uint32 talentRank, bool command /*= fa
         return;
 
     // xinef: prevent learn talent for different class (cheating)
-    if ((getClassMask() & talentTabInfo->ClassMask) == 0)
+    if (!MatchesClassMask(DYNAMIC_MASK_TABLE_TALENT_TAB, talentTabInfo->TalentTabID, 1, talentTabInfo->ClassMask, getClass()))
         return;
 
     // xinef: find current talent rank

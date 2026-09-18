@@ -51,6 +51,8 @@ enum MiscHook
     MISCHOOK_ON_CONDITION_CHECK_RACE,
     MISCHOOK_ON_CONDITION_VALIDATE_RACE,
     MISCHOOK_ON_ITEM_QUERY_SINGLE_RACE_MASK,
+    MISCHOOK_ON_CHECK_RACE_MASK,
+    MISCHOOK_ON_CHECK_CLASS_MASK,
     MISCHOOK_END
 };
 
@@ -132,6 +134,10 @@ public:
      * @return true if handled by script (custom serialization written), false to fallback to default uint32
      */
     virtual bool OnItemQuerySingleRaceMask(WorldSession* /*session*/, ItemTemplate const* /*proto*/, WorldPacket& /*data*/) { return false; }
+
+    virtual bool OnCheckRaceMask(uint8 /*table*/, uint32 /*recordId*/, uint8 /*maskIndex*/, uint32 /*fallbackMask*/, uint8 /*race*/, bool& /*result*/) { return false; }
+
+    virtual bool OnCheckClassMask(uint8 /*table*/, uint32 /*recordId*/, uint8 /*maskIndex*/, uint32 /*fallbackMask*/, uint8 /*class_*/, bool& /*result*/) { return false; }
 };
 
 #endif

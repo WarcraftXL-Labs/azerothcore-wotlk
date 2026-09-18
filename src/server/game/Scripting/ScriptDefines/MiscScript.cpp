@@ -154,6 +154,34 @@ bool ScriptMgr::OnItemQuerySingleRaceMask(WorldSession* session, ItemTemplate co
     return false;
 }
 
+bool ScriptMgr::OnCheckRaceMask(uint8 table, uint32 recordId, uint8 maskIndex, uint32 fallbackMask, uint8 race, bool& result)
+{
+    if (ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CHECK_RACE_MASK].empty())
+        return false;
+
+    for (auto const& script : ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CHECK_RACE_MASK])
+    {
+        if (script->OnCheckRaceMask(table, recordId, maskIndex, fallbackMask, race, result))
+            return true;
+    }
+
+    return false;
+}
+
+bool ScriptMgr::OnCheckClassMask(uint8 table, uint32 recordId, uint8 maskIndex, uint32 fallbackMask, uint8 class_, bool& result)
+{
+    if (ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CHECK_CLASS_MASK].empty())
+        return false;
+
+    for (auto const& script : ScriptRegistry<MiscScript>::EnabledHooks[MISCHOOK_ON_CHECK_CLASS_MASK])
+    {
+        if (script->OnCheckClassMask(table, recordId, maskIndex, fallbackMask, class_, result))
+            return true;
+    }
+
+    return false;
+}
+
 MiscScript::MiscScript(char const* name, std::vector<uint16> enabledHooks)
     : ScriptObject(name, MISCHOOK_END)
 {
